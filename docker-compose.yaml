@@ -1,7 +1,19 @@
 services:
   load_test:
-    build: .
+    build: ./load_test
     image: load_test
-    container_name: load_test
     environment:
-      TASK_NUMBER: 10
+      TASK_NUMBER: 100
+      URL: http://test_server:8000/
+    depends_on:
+      - test_server
+    deploy:
+      mode: replicated
+      replicas: 100
+
+  test_server:
+    build: ./test_server
+    image: test_server
+    container_name: test_server
+    ports:
+      - 8000:8000

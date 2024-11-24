@@ -29,8 +29,11 @@ let domain_task_2 = fun () ->
 
 [@@@warning "-32"]
 let domain_task_3 = fun () ->
-  let url = "https://jsonplaceholder.typicode.com/todos/2" in
-  let res = Ezcurl.get ~url () in
+  let url = 
+    match Sys.getenv_opt "URL" with
+    | Some url -> url
+    | None -> failwith "need URL environment variable" in
+  let res = Eio.traceln "starting request to %s" url; Ezcurl.get ~url () in
   let content = 
     match res with 
     | Ok c -> c 
