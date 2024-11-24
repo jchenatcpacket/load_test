@@ -48,11 +48,12 @@ let main ~domain_mgr =
     | 1 -> [task]
     | _ -> task :: create_n_tasks (n-1) task
   in 
-  let task_number = 
+  (* let task_number = 
     match Sys.getenv_opt "TASK_NUMBER" with
     | Some n -> int_of_string n
     | None -> 0
-  in
+  in *)
+  let task_number = Domain.recommended_domain_count () in
   let tasks = create_n_tasks task_number (fun () -> Eio.Domain_manager.run domain_mgr domain_task_3)
   in
   Eio.Fiber.all tasks;;

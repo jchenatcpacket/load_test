@@ -4,7 +4,6 @@ depends: [
   "ocaml"
   "dune" {>= "3.4"}
   "eio_main"
-  "cohttp-lwt-unix"
   "ezcurl"
   "odoc" {with-doc}
 ]
