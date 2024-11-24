@@ -1,12 +1,18 @@
-FROM alpine:3.20 AS base
+FROM ubuntu:24.10 AS base
+
+RUN apt-get update \
+    && apt-get upgrade -y
+
+# install system dependencies
+RUN apt-get install -y \
+    libcurl4-gnutls-dev 
 
 FROM base AS builder
 
-RUN apk update && \
-    apk upgrade && \
-    apk add -i linux-headers build-base opam
-
-RUN opam init --bare -a -y --disable-sandboxing \
+# --disable-sandboxing is needed due to bwrap: No permissions to creating new namespace error
+RUN apt-get install -y \
+    opam \
+    && opam init --bare -a -y --disable-sandboxing \
     && opam update
 
 RUN opam switch create default ocaml-base-compiler.5.2.0
