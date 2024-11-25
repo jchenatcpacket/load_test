@@ -14,7 +14,7 @@ let api_request = fun () ->
 let main ~domain_mgr ~clock =
   let destined_unix_time = 
     match Sys.getenv_opt "DESTINED_UNIX_TIME" with
-    | Some unix_timestamp when float_of_string unix_timestamp < (Unix.time ()) -> float_of_string unix_timestamp
+    | Some unix_timestamp when float_of_string unix_timestamp > (Unix.time ()) -> float_of_string unix_timestamp
     | None -> failwith "please include a future unix time in environment variable"
     | _ -> failwith "please enter a future unix time"
   in
@@ -33,4 +33,5 @@ let main ~domain_mgr ~clock =
   Eio.Fiber.all tasks;;
 
 let () = Eio_main.run @@ fun env ->
+  Eio.traceln "my name: %s, her name: %s" Helper.MyHelper.myname Helper.her_name;
   main ~domain_mgr:(Eio.Stdenv.domain_mgr env) ~clock:(Eio.Stdenv.clock env);;
