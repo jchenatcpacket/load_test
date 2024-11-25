@@ -14,8 +14,9 @@ let api_request = fun () ->
 let main ~domain_mgr ~clock =
   let destined_unix_time = 
     match Sys.getenv_opt "DESTINED_UNIX_TIME" with
-    | Some n -> float_of_string n
-    | None -> 0.0
+    | Some unix_timestamp when float_of_string unix_timestamp < (Unix.time ()) -> float_of_string unix_timestamp
+    | None -> failwith "please include a future unix time in environment variable"
+    | _ -> failwith "please enter a future unix time"
   in
   let rec create_n_tasks n task = 
     match n with
@@ -26,7 +27,9 @@ let main ~domain_mgr ~clock =
   let task_number = Domain.recommended_domain_count () in
   let tasks = create_n_tasks task_number (fun () -> Eio.Domain_manager.run domain_mgr api_request)
   in
+  Eio.traceln "start waiting";
   Eio.Time.sleep_until clock destined_unix_time;
+  Eio.traceln "done waiting. starting tasks";
   Eio.Fiber.all tasks;;
 
 let () = Eio_main.run @@ fun env ->

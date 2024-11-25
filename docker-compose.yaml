@@ -3,7 +3,7 @@ services:
     build: .
     image: load_test
     environment:
-      DESTINED_UNIX_TIME: 1732569420
+      DESTINED_UNIX_TIME: 1732569900
       URL: http://test_server:8000/
     deploy:
       mode: replicated
