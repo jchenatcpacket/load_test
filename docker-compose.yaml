@@ -5,15 +5,6 @@ services:
     environment:
       TASK_NUMBER: 100
       URL: http://test_server:8000/
-    depends_on:
-      - test_server
     deploy:
       mode: replicated
       replicas: 100
-
-  test_server:
-    build: ./test_server
-    image: test_server
-    container_name: test_server
-    ports:
-      - 8000:8000

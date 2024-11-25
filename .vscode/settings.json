@@ -1,7 +1,7 @@
 {
     "ocaml.sandbox": {
         "kind": "custom",
-        "template": "/opt/homebrew/bin/opam exec -- $prog $args"
+        "template": "/usr/bin/opam exec -- $prog $args"
     },
     "cSpell.enableFiletypes": [
         "ocaml"
