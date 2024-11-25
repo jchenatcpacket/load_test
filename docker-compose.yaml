@@ -1,6 +1,6 @@
 services:
   load_test:
-    build: ./load_test
+    build: .
     image: load_test
     environment:
       DESTINED_UNIX_TIME: 1732569420
