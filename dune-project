@@ -2,6 +2,6 @@
 
 (package
  (name load_test)
- (depends ocaml dune eio_main ezcurl))
+ (depends ocaml dune eio_main ezcurl cohttp piaf))
 
 (generate_opam_files true)

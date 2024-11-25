@@ -3,8 +3,8 @@ services:
     build: ./load_test
     image: load_test
     environment:
-      TASK_NUMBER: 100
+      DESTINED_UNIX_TIME: 1732569420
       URL: http://test_server:8000/
     deploy:
       mode: replicated
-      replicas: 100
+      replicas: 1
