@@ -27,7 +27,7 @@ COPY dune-project dune  *.opam ./
 
 RUN opam install . --deps-only -y
 
-COPY main.ml ./
+COPY *.ml ./
 
 # eval $(opam config env) applies dune to PATH but it only persists in a single RUN layer
 RUN eval $(opam config env) \

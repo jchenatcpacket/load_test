@@ -1,19 +1,11 @@
 services:
   load_test:
-    build: ./load_test
+    build: .
     image: load_test
     environment:
-      TASK_NUMBER: 100
-      URL: http://test_server:8000/
-    depends_on:
-      - test_server
+      # MUST use GMT time
+      SCHEDULED_TIME: 2024-11-26T01:40:00
+      URL: http://lin-jchen-01.int.cpacket.com:8000/
     deploy:
       mode: replicated
       replicas: 100
-
-  test_server:
-    build: ./test_server
-    image: test_server
-    container_name: test_server
-    ports:
-      - 8000:8000

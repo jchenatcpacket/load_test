@@ -5,6 +5,8 @@ depends: [
   "dune" {>= "3.4"}
   "eio_main"
   "ezcurl"
+  "cohttp"
+  "piaf"
   "odoc" {with-doc}
 ]
 build: [
