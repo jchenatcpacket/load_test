@@ -25,15 +25,15 @@ let main ~domain_mgr ~clock =
   in
   Eio.traceln "current time:  %f" cur_time;
   Eio.traceln "destined time: %f" destined_time;
-  if destined_time < cur_time then failwith "destined time is in the past, enter a future time"
-  else
+  match destined_time < cur_time with
+  | true -> failwith "destined time is in the past, enter a future time"
+  | false ->
     Eio.traceln "start waiting";
     Eio.Time.sleep_until clock destined_time;
     Eio.traceln "done waiting. starting tasks";
     Eio.Fiber.all tasks;;
 
 (* let () = Eio_main.run @@ fun env ->
-  Eio.traceln "my name: %s, her name: %s" Helper.MyHelper.myname Helper.her_name;
   main ~domain_mgr:(Eio.Stdenv.domain_mgr env) ~clock:(Eio.Stdenv.clock env);; *)
 
 let () = Eio_main.run @@ fun env -> 
