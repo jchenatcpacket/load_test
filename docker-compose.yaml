@@ -4,8 +4,8 @@ services:
     image: load_test
     environment:
       # MUST use GMT time
-      DESTINED_UNIX_TIME: 2024-11-26T01:30:00
-      URL: http://test_server:8000/
+      SCHEDULED_TIME: 2024-11-26T01:40:00
+      URL: http://lin-jchen-01.int.cpacket.com:8000/
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 100
