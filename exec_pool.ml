@@ -25,7 +25,7 @@ let rec create_task task_number accumulator exec_pool ~sw http_client =
   let tasks = create_task task_number [] exec_pool ~sw http_client in
   Eio.Fiber.all tasks;; *)
 
-let main ~domain_mgr http_client =
+let main ~domain_mgr http_client ~clock =
   let open Eio in
   Switch.run @@ fun sw ->
   let pool =
@@ -37,4 +37,5 @@ let main ~domain_mgr http_client =
   in
   let task_number = Sys.getenv "REQUEST_NUMBER" |> int_of_string in
   let tasks = List.init task_number (fun _ -> fun () -> task ~sw http_client) in
-  Fiber.all tasks
+  Helper.wait_until clock ();
+  Fiber.all tasks;;

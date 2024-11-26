@@ -34,10 +34,11 @@ let main ~domain_mgr ~clock =
     Eio.Fiber.all tasks;;
 
 (* let () = Eio_main.run @@ fun env ->
+  Eio.traceln "For testing module scopes: my name: %s, her name: %s" Helper.MyHelper.myname Helper.her_name;
   main ~domain_mgr:(Eio.Stdenv.domain_mgr env) ~clock:(Eio.Stdenv.clock env);; *)
 
 let () = Eio_main.run @@ fun env -> 
   let open Cohttp_eio in
   let client = Client.make ~https:None env#net in
   let domain_mgr = Eio.Stdenv.domain_mgr env in
-  Exec_pool.main ~domain_mgr client;;
+  Exec_pool.main ~domain_mgr client ~clock:(Eio.Stdenv.clock env);;
