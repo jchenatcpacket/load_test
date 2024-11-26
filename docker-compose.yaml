@@ -1,6 +1,8 @@
 services:
   load_test:
-    build: .
+    build: 
+      context: .
+      target: runner
     image: load_test
     environment:
       # MUST use GMT time

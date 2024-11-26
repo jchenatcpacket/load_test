@@ -2,36 +2,33 @@
 
 FROM ubuntu:24.10 AS base
 
+FROM base AS opam
+
 RUN apt-get update \
     && apt-get upgrade -y
 
-# install system dependencies
-RUN apt-get install -y \
-    libcurl4-gnutls-dev 
-
-FROM base AS builder
+RUN apt-get install -y opam
 
 # --disable-sandboxing is needed due to bwrap: No permissions to creating new namespace error
-RUN apt-get install -y \
-    opam \
-    && opam init --bare -a -y --disable-sandboxing \
-    && opam update
+RUN opam init --bare -a -y --disable-sandboxing && opam update
 
 RUN opam switch create default ocaml-base-compiler.5.2.0
 
-RUN opam install -y dune
+FROM opam AS builder
 
 WORKDIR /app
 
 COPY dune-project dune  *.opam ./
 
-RUN opam install . --deps-only -y
+RUN opam install . --depext-only --yes --confirm-level=unsafe-yes
+
+RUN opam install . --deps-only --assume-depexts --yes
 
 COPY *.ml ./
 
-# eval $(opam config env) applies dune to PATH but it only persists in a single RUN layer
-RUN eval $(opam config env) \
-    && dune build main.exe
+RUN opam exec dune build main.exe
+
+CMD [ "opam" "exec" "dune" "exec" "main" ]
 
 FROM base AS runner
 
