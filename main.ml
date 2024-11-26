@@ -12,7 +12,7 @@ let api_request = fun () ->
   Eio.traceln "res staus code: %d" content.Ezcurl.code;;
 
 let main ~domain_mgr ~clock =
-  let destined_time = Sys.getenv "DESTINED_UNIX_TIME" |> float_of_string in
+  let destined_time = Sys.getenv "DESTINED_UNIX_TIME" |> Helper.dt_to_unix in
   let cur_time = Eio.Time.now clock in
   let rec create_n_tasks n task = 
     match n with
