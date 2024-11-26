@@ -8,8 +8,8 @@ services:
     command: opam exec dune exec load_test
     environment:
       REQUEST_NUMBER: 3
-      # MUST use GMT time
-      SCHEDULED_TIME: 2024-11-26T01:40:00
+      # MUST use PST time: 24 hour clock
+      SCHEDULED_TIME: 2024-11-26T15:59:00
       URL: http://lin-jchen-01.int.cpacket.com:8000/
     deploy:
       mode: replicated

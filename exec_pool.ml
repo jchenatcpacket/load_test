@@ -2,6 +2,7 @@
 let api_request client ~sw = 
   let open Cohttp_eio in
   let url = Sys.getenv "URL" in
+  Eio.traceln "start http request";
   let resp, _ = Client.get ~sw client (Uri.of_string url) in
   match resp.status with
   | `OK -> Eio.traceln "success request"
@@ -32,7 +33,6 @@ let main ~domain_mgr http_client ~clock =
     Eio.Executor_pool.create ~sw domain_mgr ~domain_count:(Domain.recommended_domain_count ())
   in
   let task =
-    traceln "start http request";
     Eio.Executor_pool.submit_exn pool ~weight:0.01 (fun () -> api_request)
   in
   let task_number = Sys.getenv "REQUEST_NUMBER" |> int_of_string in
