@@ -1,4 +1,6 @@
 (executable
  (name main)
  (public_name load_test)
- (libraries eio_main ezcurl cohttp piaf))
+ (libraries eio_main ezcurl cohttp-eio piaf)
+ (flags (:standard -w -32))
+)

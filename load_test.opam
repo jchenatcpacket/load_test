@@ -5,7 +5,7 @@ depends: [
   "dune" {>= "3.4"}
   "eio_main"
   "ezcurl"
-  "cohttp"
+  "cohttp-eio"
   "piaf"
   "odoc" {with-doc}
 ]

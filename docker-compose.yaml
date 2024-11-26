@@ -5,6 +5,7 @@ services:
       target: runner
     image: load_test
     environment:
+      REQUEST_NUMBER: 1
       # MUST use GMT time
       SCHEDULED_TIME: 2024-11-26T01:40:00
       URL: http://lin-jchen-01.int.cpacket.com:8000/

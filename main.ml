@@ -32,6 +32,12 @@ let main ~domain_mgr ~clock =
     Eio.traceln "done waiting. starting tasks";
     Eio.Fiber.all tasks;;
 
-let () = Eio_main.run @@ fun env ->
+(* let () = Eio_main.run @@ fun env ->
   Eio.traceln "my name: %s, her name: %s" Helper.MyHelper.myname Helper.her_name;
-  main ~domain_mgr:(Eio.Stdenv.domain_mgr env) ~clock:(Eio.Stdenv.clock env);;
+  main ~domain_mgr:(Eio.Stdenv.domain_mgr env) ~clock:(Eio.Stdenv.clock env);; *)
+
+let () = Eio_main.run @@ fun env -> 
+  let open Cohttp_eio in
+  let client = Client.make ~https:None env#net in
+  let domain_mgr = Eio.Stdenv.domain_mgr env in
+  Exec_pool.main ~domain_mgr client;;
