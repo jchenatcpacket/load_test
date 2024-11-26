@@ -12,12 +12,8 @@ let api_request = fun () ->
   Eio.traceln "res staus code: %d" content.Ezcurl.code;;
 
 let main ~domain_mgr ~clock =
-  let destined_unix_time = 
-    match Sys.getenv_opt "DESTINED_UNIX_TIME" with
-    | Some unix_timestamp when float_of_string unix_timestamp > (Unix.time ()) -> float_of_string unix_timestamp
-    | None -> failwith "please include a future unix time in environment variable"
-    | _ -> failwith "please enter a future unix time"
-  in
+  let destined_time = Sys.getenv "DESTINED_UNIX_TIME" |> float_of_string in
+  let cur_time = Eio.Time.now clock in
   let rec create_n_tasks n task = 
     match n with
     | 0 -> []
@@ -27,10 +23,14 @@ let main ~domain_mgr ~clock =
   let task_number = Domain.recommended_domain_count () in
   let tasks = create_n_tasks task_number (fun () -> Eio.Domain_manager.run domain_mgr api_request)
   in
-  Eio.traceln "start waiting";
-  Eio.Time.sleep_until clock destined_unix_time;
-  Eio.traceln "done waiting. starting tasks";
-  Eio.Fiber.all tasks;;
+  Eio.traceln "current time:  %f" cur_time;
+  Eio.traceln "destined time: %f" destined_time;
+  if destined_time < cur_time then failwith "destined time is in the past, enter a future time"
+  else
+    Eio.traceln "start waiting";
+    Eio.Time.sleep_until clock destined_time;
+    Eio.traceln "done waiting. starting tasks";
+    Eio.Fiber.all tasks;;
 
 let () = Eio_main.run @@ fun env ->
   Eio.traceln "my name: %s, her name: %s" Helper.MyHelper.myname Helper.her_name;
