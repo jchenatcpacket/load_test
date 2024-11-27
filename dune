@@ -1,6 +1,21 @@
+; (executables
+;  (name main)
+;  (public_name load_test)
+;  (libraries eio_main ezcurl cohttp-eio)
+;  (flags (:standard -w -32)) ; unused value warning
+; )
+
 (executable
- (name main)
+ (name client_tls)
  (public_name load_test)
- (libraries eio_main ezcurl cohttp-eio)
- (flags (:standard -w -32)) ; unused value warning
-)
+ (libraries
+ cohttp-eio
+ eio_main
+ eio.unix
+ fmt
+ unix
+ logs.fmt
+ logs.threaded
+ tls-eio
+ ca-certs
+ mirage-crypto-rng-eio))
