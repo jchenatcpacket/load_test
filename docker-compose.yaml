@@ -6,10 +6,10 @@ services:
     image: load_test
     # command: tail -f /dev/null 
     command: opam exec dune exec load_test
+    env_file:
+      - .env
     environment:
       REQUEST_NUMBER: 3
-      # MUST use PST time: 24 hour clock
-      SCHEDULED_TIME: 2024-11-26T15:59:00
       URL: http://lin-jchen-01.int.cpacket.com:8000/
     deploy:
       mode: replicated
