@@ -7,7 +7,7 @@ services:
     # command: tail -f /dev/null 
     command: opam exec dune exec load_test
     environment:
-      # MUST use PST time: 24 hour clock
+      # MUST use PST time: 24 hour clock in format YYYY-MM-DDTHH:MM:SS
       SCHEDULED_TIME:
       REQUEST_NUMBER:
       URL:

@@ -1,8 +1,8 @@
 # Load Test
-Programmatically invoke API endpoints to perform load test on API server
+Programmatically making http request to an API endpoints to perform load test
 
 ## run test server
-`docker compose up test_server`
+`docker compose up`
 
 ## run load_test
-`docker compose up load_test --remove-orphans`
+`docker compose up --remove-orphans`
