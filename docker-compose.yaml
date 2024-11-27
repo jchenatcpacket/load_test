@@ -10,7 +10,7 @@ services:
       # MUST use PST time: 24 hour clock
       SCHEDULED_TIME:
       REQUEST_NUMBER:
-      URL: http://lin-jchen-01.int.cpacket.com:8000/
+      URL:
     env_file:
       - .env
     deploy:
