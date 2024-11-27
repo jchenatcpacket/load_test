@@ -2,12 +2,17 @@ services:
   load_test:
     build: 
       context: .
-      target: runner
+      target: builder
     image: load_test
+    # command: tail -f /dev/null 
+    command: opam exec dune exec load_test
     environment:
-      # MUST use GMT time
-      SCHEDULED_TIME: 2024-11-26T01:40:00
-      URL: http://lin-jchen-01.int.cpacket.com:8000/
+      # MUST use PST time: 24 hour clock
+      SCHEDULED_TIME:
+      REQUEST_NUMBER:
+      URL:
+    env_file:
+      - .env
     deploy:
       mode: replicated
-      replicas: 100
+      replicas: 1

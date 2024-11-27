@@ -49,6 +49,19 @@ let compose f g x = g (f x)
 
 let dt_to_unix = compose dt_to_tm tm_to_unix
 
+let wait_until clock () = 
+  let pst_destined_time = Sys.getenv "SCHEDULED_TIME" |> dt_to_unix in 
+  let gmt_destined_time = pst_destined_time +. 28800. in
+  let gmt_cur_time = Eio.Time.now clock in
+  Eio.traceln "current time:  %f" gmt_cur_time;
+  Eio.traceln "destined time: %f" gmt_destined_time;
+  match gmt_destined_time < gmt_cur_time with
+  | true -> failwith "destined time is in the past, enter a future time"
+  | false ->
+    Eio.traceln "start waiting.";
+    Eio.Time.sleep_until clock gmt_destined_time;
+    Eio.traceln "done waiting.";;
+
 module MyHelper = struct
   let myname = "james"
 end

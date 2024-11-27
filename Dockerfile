@@ -28,7 +28,7 @@ COPY *.ml ./
 
 RUN opam exec dune build main.exe
 
-CMD [ "opam" "exec" "dune" "exec" "main" ]
+CMD [ "opam" "exec" "dune" "exec" "load_test" ]
 
 FROM base AS runner
 
