@@ -28,6 +28,5 @@
 
 (env
  (myprofile
- (env-vars (OCAMLRUNPARAM b))
  (flags (:standard -w -32) (:standard -w -33))
  ))

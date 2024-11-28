@@ -1,3 +1,5 @@
 (lang dune 3.4)
 
 (profile myprofile)
+
+; env OCAMLRUNPARAM=b for exception stack trace
