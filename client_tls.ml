@@ -1,4 +1,5 @@
 open Cohttp_eio
+open Cohttp
 
 let authenticator =
   match Ca_certs.authenticator () with
@@ -24,14 +25,27 @@ let https ~authenticator =
     in
     Tls_eio.client_of_flow ?host tls_config raw
 
+let headers = Header.add_authorization 
+  (Header.init ()) 
+  (`Basic (Sys.getenv "USERNAME", Sys.getenv "PASSWORD"));;
+
+let url = "https://lin-jchen-01.int.cpacket.com/api/epg_fr/known_udp_protocols/"
+
+(* TODO: *)
+(* 1. unable to resolve IP address for hostname *)
+(* 2. need to disable ssl validation *)
 let () =
   Eio_main.run @@ fun env ->
   Mirage_crypto_rng_eio.run (module Mirage_crypto_rng.Fortuna) env @@ fun () ->
   let client = Client.make ~https:(Some (https ~authenticator)) env#net in
   Eio.Switch.run @@ fun sw ->
   let resp, body =
-    Client.get ~sw client (Uri.of_string "https://jsonplaceholder.typicode.com/todos/2")
+    Client.get 
+      ~sw 
+      (* ~headers *)
+      client 
+      (Uri.of_string url)
   in
-  if Http.Status.compare resp.status `OK = 0 then
-    print_string @@ Eio.Buf_read.(parse_exn take_all) body ~max_size:max_int
-  else Fmt.epr "Unexpected HTTP status: %a" Http.Status.pp resp.status
+  match resp.status with 
+  |`OK -> print_string @@ Eio.Buf_read.(parse_exn take_all) body ~max_size:max_int
+  | _ -> Fmt.epr "Unexpected HTTP status: %a" Http.Status.pp resp.status

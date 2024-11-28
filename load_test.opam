@@ -6,6 +6,7 @@ depends: [
   "eio_main"
   "ezcurl"
   "cohttp-eio"
+  "piaf"
   "odoc" {with-doc}
 ]
 build: [
