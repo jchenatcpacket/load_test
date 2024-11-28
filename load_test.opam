@@ -7,6 +7,7 @@ depends: [
   "ezcurl"
   "cohttp-eio"
   "piaf"
+  "mirage-crypto-rng-eio"
   "odoc" {with-doc}
 ]
 build: [
