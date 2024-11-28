@@ -18,7 +18,7 @@ FROM opam AS builder
 
 WORKDIR /app
 
-COPY dune-project dune  *.opam ./
+COPY dune-project dune-workspace dune  *.opam ./
 
 RUN opam install . --depext-only --yes --confirm-level=unsafe-yes
 
@@ -26,7 +26,7 @@ RUN opam install . --deps-only --assume-depexts --yes
 
 COPY *.ml ./
 
-RUN opam exec dune build main.exe
+RUN opam exec dune build
 
 CMD [ "opam" "exec" "dune" "exec" "load_test" ]
 
