@@ -2,7 +2,6 @@
  (name main)
  (public_name load_test)
  (libraries eio_main ezcurl cohttp-eio)
- (flags (:standard -w -32)) ; unused value warning
 )
 
 (executable
@@ -18,4 +17,17 @@
  tls-eio
  ca-certs
  mirage-crypto-rng-eio)
- (flags (:standard -w -32)))
+ )
+
+(executable
+ (name client_piaf)
+ (libraries
+ eio_main
+ piaf)
+ )
+
+(env
+ (myprofile
+ (env-vars (OCAMLRUNPARAM b))
+ (flags (:standard -w -32) (:standard -w -33))
+ ))
