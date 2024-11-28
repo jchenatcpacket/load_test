@@ -18,4 +18,6 @@
  logs.threaded
  tls-eio
  ca-certs
- mirage-crypto-rng-eio))
+ mirage-crypto-rng-eio)
+ (flags (:standard -w -32))
+ )
