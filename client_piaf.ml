@@ -37,7 +37,9 @@ let api_request2 env ~sw =
   Eio.traceln "starting request...";
   match Piaf.Client.Oneshot.get 
     ~config:{
-      Piaf.Config.default with allow_insecure = true;
+      Piaf.Config.default with 
+        allow_insecure = true;
+        connect_timeout = 1000000.0;
     }
     ~headers:headers
     ~sw
