@@ -28,5 +28,9 @@
 
 (env
  (myprofile
- (flags (:standard -w -32) (:standard -w -33))
+ (flags
+  (:standard -w -21) ; unsound type
+  (:standard -w -26) ; unused var
+  (:standard -w -32) ; unused value
+  (:standard -w -33))
  ))
