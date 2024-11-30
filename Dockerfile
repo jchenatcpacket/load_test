@@ -37,3 +37,9 @@ WORKDIR /app
 COPY --from=builder /app/_build/default/main.exe /app
 
 CMD [ "/app/main.exe" ]
+
+FROM opam AS dev
+
+RUN opam install utop dune --yes
+
+WORKDIR /app

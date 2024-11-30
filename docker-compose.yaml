@@ -18,3 +18,11 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+  dev:
+    build:
+      context: .
+      target: dev
+    image: load_test-dev
+    container_name: load_test-dev
+    working_dir: /app
+    command: tail -f /dev/null

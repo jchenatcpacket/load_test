@@ -21,16 +21,21 @@ let headers =
   let user = Printf.sprintf "%s:%s" (Sys.getenv "USERNAME") (Sys.getenv "PASSWORD") in
   [("Authorization", "Basic " ^ Base64.encode_exn user)]
 
+let api_request client = 
+  let res_result = Client.get ~headers client api in
+  let res_body = 
+  match res_result with
+  | Ok res -> Body.to_string res.body
+  | Error err -> Error.to_string err |> failwith
+  in
+  match res_body with 
+  | Ok body_str -> body_str
+  | Error err -> Error.to_string err |> failwith 
+
 let _ =
   Eio_main.run @@ fun env ->
   Eio.Switch.run @@ fun sw ->
   let client = create_client env ~sw in
-  let res_result = Client.get ~headers client api in
-  let res_body = 
-    match res_result with
-    | Ok res -> Body.to_string res.body
-    | Error error -> failwith ("Error: " ^ Error.to_string error)
-  in
-  match res_body with 
-  | Ok body_str -> Eio.traceln "%s" body_str;Client.shutdown client
-  | _ -> failwith "error parsing res";;
+  let res_body_str = api_request client in
+  Eio.traceln "response body: %s\n" res_body_str;
+  Client.shutdown client;;
