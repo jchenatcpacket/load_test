@@ -29,7 +29,7 @@ let headers = Header.add_authorization
   (Header.init ()) 
   (`Basic (Sys.getenv "USERNAME", Sys.getenv "PASSWORD"));;
 
-let url = "https://lin-jchen-01.int.cpacket.com/api/epg_fr/known_udp_protocols/"
+let url = Sys.getenv "URL"
 
 (* TODO: *)
 (* 1. unable to resolve IP address for hostname *)
