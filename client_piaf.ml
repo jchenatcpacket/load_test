@@ -1,9 +1,3 @@
-let hostname = "https://lin-jchen-01.int.cpacket.com"
-let host = "https://10.50.4.134"
-let api = "/api/epg_fr/known_udp_protocols/"
-
-(* let url = host ^ api *)
-
 let url = Sys.getenv "URL"
 
 let create_client env ~sw =
@@ -14,7 +8,7 @@ let create_client env ~sw =
     ~config:{
       Config.default with allow_insecure = true;
     }
-    (Uri.of_string host)
+    (Uri.of_string "")
   in
   match client_result with 
   | Ok client -> client
@@ -29,7 +23,7 @@ let headers =
 let api_request env ~sw = 
   Eio.traceln "starting request...";
   let client = create_client env ~sw in
-  let res_result = Piaf.Client.get ~headers client api in
+  let res_result = Piaf.Client.get ~headers client "" in
   match res_result with
   | Ok res -> Piaf.Status.to_code res.status |> Eio.traceln "resp status: %d"
   | Error err -> failwith (Piaf.Error.to_string err);
