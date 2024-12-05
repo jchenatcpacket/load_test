@@ -79,9 +79,17 @@ let main env =
   let clock = Eio.Stdenv.clock env in
   Eio.Switch.run @@ fun sw ->
     let pool = Eio.Executor_pool.create ~sw domain_mgr ~domain_count:(Domain.recommended_domain_count ()) in
-    let task = Eio.Executor_pool.submit_exn pool ~weight:0.01 (fun () -> api_request3) in
+    let task = Eio.Executor_pool.submit_exn pool ~weight:0.01 (fun () -> api_request2) in
     let tasks = List.init parallel_count (fun _ -> fun () -> task env ~sw) in
-    Helper.wait_until clock ();
-    Eio.Fiber.all tasks;;
+    let rec loop_tasks () = 
+      Eio.Fiber.all tasks;
+      Eio.traceln "sleeping for 3 sec:";
+      Eio.Time.sleep clock 3.0;
+      Eio.traceln "done sleeping, making req again";
+      loop_tasks ();
+    in 
+    loop_tasks ();;
 
-let _ = Eio_main.run @@ fun env -> main env;;
+let _ = Eio_main.run @@ fun env -> 
+  Helper.wait_until (Eio.Stdenv.clock env) ();
+  main env;;
