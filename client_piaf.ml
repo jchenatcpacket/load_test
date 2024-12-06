@@ -92,7 +92,7 @@ let api_request4 env ~sw =
 let main env =
   let domain_mgr = Eio.Stdenv.domain_mgr env in
   let clock = Eio.Stdenv.clock env in
-  Helper.wait_until clock ();
+  (* Helper.wait_until clock (); *)
   Eio.Switch.run @@ fun sw ->
     let pool = Eio.Executor_pool.create ~sw domain_mgr ~domain_count:(Domain.recommended_domain_count ()) in
     let task = Eio.Executor_pool.submit_exn pool ~weight:0.01 (fun () -> api_request4) in
