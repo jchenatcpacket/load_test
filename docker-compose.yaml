@@ -9,8 +9,8 @@ services:
       # enable stack trace
       OCAMLRUNPARAM: b
       # MUST use PST time: 24 hour clock in format YYYY-MM-DDTHH:MM:SS
-      SCHEDULED_TIME: 2024-12-05T16:07:00
-      REQUEST_NUMBER: 100000
+      SCHEDULED_TIME:
+      REQUEST_NUMBER:
       URL:
     env_file:
       - .env
