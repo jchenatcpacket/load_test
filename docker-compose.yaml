@@ -9,8 +9,8 @@ services:
       # enable stack trace
       OCAMLRUNPARAM: b
       # MUST use PST time: 24 hour clock in format YYYY-MM-DDTHH:MM:SS
-      SCHEDULED_TIME:
-      REQUEST_NUMBER:
+      SCHEDULED_TIME: 2024-12-05T16:07:00
+      REQUEST_NUMBER: 100000
       URL:
     env_file:
       - .env
@@ -18,6 +18,7 @@ services:
       mode: replicated
       replicas: 1
       restart_policy:
+        delay: 2s
         condition: on-failure
   dev:
     build:
