@@ -16,7 +16,10 @@ services:
       - .env
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: ${COMPOSE_REPLICA}
+      restart_policy:
+        delay: 2s
+        condition: on-failure
   dev:
     build:
       context: .

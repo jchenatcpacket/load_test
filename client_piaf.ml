@@ -74,14 +74,36 @@ let api_request3 env ~sw =
     Piaf.Status.to_code resp.status |> Eio.traceln "resp status: %d"
   | Error err -> failwith ("error resp: " ^ Piaf.Error.to_string err);;
 
+let api_request4 env ~sw =
+    Eio.traceln "starting request...";
+    let _ = Piaf.Client.Oneshot.get 
+        ~config:{
+        Piaf.Config.default with 
+            allow_insecure = true;
+            connect_timeout = 1000000.0;
+        }
+        ~headers:headers
+        ~sw
+        env
+        (Uri.of_string url) in
+    Eio.traceln "sent request";;
+
+
 let main env =
   let domain_mgr = Eio.Stdenv.domain_mgr env in
   let clock = Eio.Stdenv.clock env in
+  (* Helper.wait_until clock (); *)
   Eio.Switch.run @@ fun sw ->
     let pool = Eio.Executor_pool.create ~sw domain_mgr ~domain_count:(Domain.recommended_domain_count ()) in
-    let task = Eio.Executor_pool.submit_exn pool ~weight:0.01 (fun () -> api_request3) in
+    let task = Eio.Executor_pool.submit_exn pool ~weight:0.01 (fun () -> api_request4) in
     let tasks = List.init parallel_count (fun _ -> fun () -> task env ~sw) in
-    (* Helper.wait_until clock (); *)
-    Eio.Fiber.all tasks;;
+    let rec loop_tasks () = 
+      Eio.Fiber.all tasks;
+      Eio.traceln "sleeping for 3 sec:";
+      Eio.Time.sleep clock 3.0;
+      Eio.traceln "done sleeping, making req again";
+      loop_tasks ();
+    in 
+    loop_tasks ();;
 
-let _ = Eio_main.run @@ fun env -> main env;;
+let _ = Eio_main.run @@ main
